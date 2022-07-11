@@ -25,4 +25,4 @@ python manage.py makemigrations
 python manage.py migrate
 
 # Step 7: Run our basic Django application
-python manage.py runserver 8090
+python manage.py runserver
