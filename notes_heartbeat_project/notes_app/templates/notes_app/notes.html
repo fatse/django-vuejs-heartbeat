@@ -1,0 +1,84 @@
+{% extends 'notes_app/index.html' %}
+
+{% block content %}
+    <div id="notes">
+        <div class="container">
+            <div style="margin-bottom:30px">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addNoteModal"><span
+                        class='bi bi-pencil-square'></span> Add Note
+                </button>
+            </div>
+            <div class="row">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Notes</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="note in notes">
+                        <td>[[note.title]]</td>
+                        <td>
+                            <a class="btn btn-info btn-sm" v-bind:href='getNoteEditUrl(note.id)'
+                               target="_blank">Edit</a>
+                            <button class="btn btn-danger btn-sm" v-on:click="deleteNote(note.id)">Delete</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!-- Add Note modal -->
+                <div class="modal fade" id="addNoteModal" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Add Note</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" a>
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            {% csrf_token %}
+                            <form v-on:submit.prevent="addNote()">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="title">Note title</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="title"
+                                               placeholder="Enter Note Title"
+                                               v-model="new_note.title"
+                                               required="required">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="content">Note Content</label>
+                                        <textarea name="content"
+                                                  id="content"
+                                                  class="form-control"
+                                                  placeholder="Enter Note Content"
+                                                  v-model="new_note.content"
+                                                  required="required"
+                                                  rows="10">
+                                    </textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="loading" v-if="loading===true">Loading...</div>
+                </div>
+                <!-- End of Add Note modal -->
+            </div>
+        </div>
+        <div class="loading" v-if="loading === true">Loading...</div>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+    {% load static %}
+    <script src="{% static 'notes_app/js/main.js' %}"></script>
+{% endblock scripts %}

@@ -1,0 +1,42 @@
+<div v-if="message">
+    <div class="container">
+        <div class="alert alert-success alert-dismissable" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            Note updated successfully.
+        </div>
+    </div>
+</div>
+
+{% csrf_token %}
+<form v-on:submit.prevent="updateNote()" autocomplete="off">
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="note_title">Title</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="note_title"
+                    placeholder="Enter Note Title"
+                    v-model="current_note.title"
+                    required="required">
+        </div>
+        <div class="form-group">
+            <label for="note_content">Content</label>
+            <textarea
+                    class="form-control"
+                    id="note_content"
+                    placeholder="Enter Note Content"
+                    v-model="current_note.content"
+                    required="required"
+                    rows="3"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary m-progress" @click="closeWindow()">
+            Close
+        </button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+</form>
